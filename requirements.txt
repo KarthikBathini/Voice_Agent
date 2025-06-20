@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+selenium
+pyttsx3
+google-generativeai
+undetected-chromedriver
