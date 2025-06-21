@@ -1,14 +1,7 @@
 services:
   - type: web
-    name: voice-ai-backend
+    name: voice-ai-fastapi
     env: python
-    region: oregon
-    branch: main
-    buildCommand: ""
+    buildCommand: pip install -r requirements.txt
     startCommand: uvicorn backend.main:app --host 0.0.0.0 --port 10000
-    plan: free
-    envVars:
-      - key: GOOGLE_API_KEY
-        value: your-gemini-api-key-here
-      - key: PORT
-        value: 10000
+    rootDir: .
