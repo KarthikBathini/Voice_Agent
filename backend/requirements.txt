@@ -1,15 +1,14 @@
-<<<<<<< HEAD
+
 fastapi
 uvicorn
 selenium
 pyttsx3
 google-generativeai
 undetected-chromedriver
-=======
 fastapi
 uvicorn
 selenium
 pyttsx3
 google-generativeai
 undetected-chromedriver
->>>>>>> f4b578e (handlers changed)
+
