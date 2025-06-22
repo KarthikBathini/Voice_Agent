@@ -7,7 +7,7 @@ from web_automation import (
     order_food_on_platform,
     search_google  # Optional if you implement SearchTopic intent
 )
-from voice_utils import speak
+
 
 def handle_command(command):
     intent, entities = extract_intent(command)
@@ -15,7 +15,7 @@ def handle_command(command):
     print("Entities:", entities)
 
     if not intent or not entities:
-        speak("Sorry, I couldn't understand your request.")
+        
         return "Intent not recognized."
 
     platform = (entities.get("platform") or "").lower()
@@ -41,14 +41,14 @@ def handle_command(command):
         if product:
             return search_google(product)
         else:
-            speak("I couldn't find the topic to search.")
+            
             return "No search term provided."
         
     elif intent == "GeneralTopic":
-        speak(f"Searching Google for {command}")
+        print(f"Searching Google for {command}")
         return search_google(command)
 
 
     else:
-        speak("This platform or action is not supported.")
+        print("This platform or action is not supported.")
         return "Unsupported intent or platform."
