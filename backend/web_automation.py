@@ -24,7 +24,7 @@ def get_driver():
 # Play a video on YouTube
 def play_video_on_youtube(product):
     driver = get_driver()
-    driver.get("https://www.youtube.com")
+    driver.get("http://www.youtube.com")
     try:
         time.sleep(3)
         box = driver.find_element(By.NAME, "search_query")
@@ -42,7 +42,7 @@ def play_video_on_youtube(product):
 def order_product(product, platform):
     driver = get_driver()
     try:
-        driver.get("https://www.google.com")
+        driver.get("http://www.google.com")
         box = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, 'q')))
         box.send_keys(platform)
         box.send_keys(Keys.ENTER)
@@ -84,9 +84,9 @@ def order_food_on_platform(food_item, restaurant, location, platform):
     driver = get_driver()
 
     if platform == "swiggy":
-        driver.get("https://www.swiggy.com")
+        driver.get("http://www.swiggy.com")
     elif platform == "zomato":
-        driver.get("https://www.zomato.com")
+        driver.get("http://www.zomato.com")
     else:
         return "Unsupported platform."
 
@@ -114,7 +114,7 @@ def order_food_on_platform(food_item, restaurant, location, platform):
 def search_google(query):
     driver = get_driver()
     try:
-        driver.get("https://www.google.com")
+        driver.get("http://www.google.com")
         box = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.NAME, 'q'))
         )
