@@ -6,7 +6,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-from voice_utils import speak
 
 def get_driver():
     chrome_options = Options()
@@ -17,7 +16,6 @@ def get_driver():
     return webdriver.Chrome(options=chrome_options)
 
 def play_video_on_youtube(product):
-    speak("Opening YouTube")
     driver = get_driver()
     driver.get("https://www.youtube.com")
     try:
@@ -32,11 +30,9 @@ def play_video_on_youtube(product):
         return f"Playing {product} on YouTube."
     except Exception as e:
         print("Error:", e)
-        speak("Could not play the video.")
         return "Error in playing video."
 
 def order_product(product, platform):
-    speak(f"Opening {platform} to order {product}")
     driver = get_driver()
     driver.get("https://www.google.com")
     try:
@@ -57,7 +53,6 @@ def order_product(product, platform):
             driver.switch_to.window(driver.window_handles[-1])
             time.sleep(3)
             driver.find_element(By.XPATH, '//*[@id="addToCart_feature_div"]').click()
-            speak("Product added to cart on Amazon.")
             return "Added to Amazon cart."
 
         elif platform == 'flipkart':
@@ -71,15 +66,14 @@ def order_product(product, platform):
             driver.switch_to.window(driver.window_handles[-1])
             time.sleep(3)
             driver.find_element(By.XPATH, '//*[@id="container"]/div/div[3]/div[1]/div[1]/div[2]/div/ul/li[1]').click()
-            speak("Product added to cart on Flipkart.")
             return "Added to Flipkart cart."
     except Exception as e:
         print("Order error:", e)
-        speak("There was a problem placing your order.")
+        
         return "Order failed."
 
 def order_food_on_platform(food_item, restaurant, location, platform):
-    speak(f"Ordering {food_item} from {restaurant} in {location} on {platform}")
+   
     driver = get_driver()
 
     if platform == "swiggy":
@@ -87,7 +81,7 @@ def order_food_on_platform(food_item, restaurant, location, platform):
     elif platform == "zomato":
         driver.get("https://www.zomato.com")
     else:
-        speak("Unsupported food platform.")
+       
         return "Unsupported platform."
 
     try:
@@ -105,11 +99,11 @@ def order_food_on_platform(food_item, restaurant, location, platform):
         driver.find_elements(By.XPATH, "//a[contains(@href,'/restaurant')]")[0].click()
         time.sleep(5)
         driver.find_element(By.XPATH, f"//*[contains(text(), '{food_item}')]").click()
-        speak(f"Ordered {food_item} from {restaurant}")
+       
         return f"Ordered {food_item} from {restaurant}"
     except Exception as e:
         print("Order error:", e)
-        speak("There was a problem placing your order.")
+        
         return "Food order failed."
 
 def search_google(query):
@@ -125,5 +119,5 @@ def search_google(query):
         return f"Searching Google for {query}"
     except Exception as e:
         print("Error while searching Google:", e)
-        speak("I couldn't search Google.")
+
         return "Google search failed."
