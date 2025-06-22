@@ -1,5 +1,6 @@
 # backend/web_automation.py
-import undetected_chromedriver as uc
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -7,9 +8,17 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from voice_utils import speak
 
+def get_driver():
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    return webdriver.Chrome(options=chrome_options)
+
 def play_video_on_youtube(product):
     speak("Opening YouTube")
-    driver = uc.Chrome()
+    driver = get_driver()
     driver.get("https://www.youtube.com")
     try:
         time.sleep(3)
@@ -28,7 +37,7 @@ def play_video_on_youtube(product):
 
 def order_product(product, platform):
     speak(f"Opening {platform} to order {product}")
-    driver = uc.Chrome()
+    driver = get_driver()
     driver.get("https://www.google.com")
     try:
         box = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, 'q')))
@@ -71,7 +80,7 @@ def order_product(product, platform):
 
 def order_food_on_platform(food_item, restaurant, location, platform):
     speak(f"Ordering {food_item} from {restaurant} in {location} on {platform}")
-    driver = uc.Chrome()
+    driver = get_driver()
 
     if platform == "swiggy":
         driver.get("https://www.swiggy.com")
@@ -104,9 +113,8 @@ def order_food_on_platform(food_item, restaurant, location, platform):
         return "Food order failed."
 
 def search_google(query):
-    driver = uc.Chrome()
+    driver = get_driver()
     driver.get("https://www.google.com")
-
     try:
         box = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.NAME, 'q'))
