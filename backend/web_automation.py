@@ -1,4 +1,3 @@
-# backend/web_automation.py
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -7,14 +6,22 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
+# Cloud-safe Chrome driver
 def get_driver():
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--headless=new")  # Use new stable headless mode
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--disable-infobars")
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument("--window-size=1920x1080")
+    chrome_options.add_argument("--start-maximized")
+    chrome_options.add_argument("--remote-debugging-port=9222")
+
     return webdriver.Chrome(options=chrome_options)
 
+# Play a video on YouTube
 def play_video_on_youtube(product):
     driver = get_driver()
     driver.get("https://www.youtube.com")
@@ -26,16 +33,16 @@ def play_video_on_youtube(product):
         time.sleep(3)
         box1 = driver.find_element(By.ID, "video-title")
         box1.click()
-        speak("Playing the video now")
         return f"Playing {product} on YouTube."
     except Exception as e:
         print("Error:", e)
         return "Error in playing video."
 
+# Order a product on Amazon or Flipkart
 def order_product(product, platform):
     driver = get_driver()
-    driver.get("https://www.google.com")
     try:
+        driver.get("https://www.google.com")
         box = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, 'q')))
         box.send_keys(platform)
         box.send_keys(Keys.ENTER)
@@ -67,13 +74,13 @@ def order_product(product, platform):
             time.sleep(3)
             driver.find_element(By.XPATH, '//*[@id="container"]/div/div[3]/div[1]/div[1]/div[2]/div/ul/li[1]').click()
             return "Added to Flipkart cart."
+
     except Exception as e:
         print("Order error:", e)
-        
         return "Order failed."
 
+# Order food from Swiggy or Zomato
 def order_food_on_platform(food_item, restaurant, location, platform):
-   
     driver = get_driver()
 
     if platform == "swiggy":
@@ -81,7 +88,6 @@ def order_food_on_platform(food_item, restaurant, location, platform):
     elif platform == "zomato":
         driver.get("https://www.zomato.com")
     else:
-       
         return "Unsupported platform."
 
     try:
@@ -99,17 +105,16 @@ def order_food_on_platform(food_item, restaurant, location, platform):
         driver.find_elements(By.XPATH, "//a[contains(@href,'/restaurant')]")[0].click()
         time.sleep(5)
         driver.find_element(By.XPATH, f"//*[contains(text(), '{food_item}')]").click()
-       
         return f"Ordered {food_item} from {restaurant}"
     except Exception as e:
         print("Order error:", e)
-        
         return "Food order failed."
 
+# Perform a Google search
 def search_google(query):
     driver = get_driver()
-    driver.get("https://www.google.com")
     try:
+        driver.get("https://www.google.com")
         box = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.NAME, 'q'))
         )
@@ -119,5 +124,4 @@ def search_google(query):
         return f"Searching Google for {query}"
     except Exception as e:
         print("Error while searching Google:", e)
-
         return "Google search failed."
